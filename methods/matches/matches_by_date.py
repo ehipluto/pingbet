@@ -1,8 +1,16 @@
 import requests, json, os, time
+import pytz
 from datetime import datetime
 from . import matches_H2H as h2h
 from ..odds_matches import getOdds as odds
 
+
+def convert_to_italian_time(utc_time):
+    utc_time = utc_time.replace('+00:00', '')
+    utc = pytz.UTC.localize(datetime.strptime(utc_time, "%Y-%m-%dT%H:%M:%S"))
+    italian_tz = pytz.timezone('Europe/Rome')
+    italian_time = utc.astimezone(italian_tz)
+    return italian_time.strftime("%H:%M")
 def getMatchToday():
     call = 0
     callOdds = 0
@@ -37,7 +45,7 @@ def getMatchToday():
                     "ID": elem['id'],
                     "Match": elem['name'],
                     "Tournament": elem['tournament_name'],
-                    "Time": elem['start_time'],
+                    "Time": convert_to_italian_time(elem['start_time']),
                     "Probability": f"{round(homePer, 2)} - {round(awayPer, 2)}",
                     "Odds": val
                 }
@@ -48,5 +56,7 @@ def getMatchToday():
 
     # Restituisci la lista dei match
     return match_list
+
+
 
 
