@@ -13,7 +13,7 @@ def favicon():
                              'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 
 @app.route('/favicon.ico')
 def favicon():
