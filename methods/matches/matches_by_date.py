@@ -17,9 +17,7 @@ def getMatchToday():
     current_date = datetime.now().strftime("%Y-%m-%d")
     print(f"Effettuo controllo match in data {current_date}")
     url = f"https://table-tennis.sportdevs.com/matches-by-date?date=eq.{current_date}"
-    tournamentsName = ["TT Star Series", "TT Elite Series", "Challenger Series TT", "WTT Feeder", "WTT Star", 
-                       "TT Cup", "China Smash", "Contender", "Liga Pro China", "WTT Champions", "WTT Contender", 
-                       "WTT Star Contender"]
+    tournamentsName = ["TT Star Series", "TT Elite Series", "Challenger Series TT", "WTT", "TT Cup", "China Smash", "Contender", "Liga Pro China"]
     payload = {}
     headers = {
         'Accept': 'application/json',
