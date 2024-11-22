@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista Match</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Match</th>
+                <th>Tournament</th>
+                <th>Time</th>
+                <th>Probability</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches %}
+            <tr>
+                <td>{{ match.ID }}</td>
+                <td>{{ match.Match }}</td>
+                <td>{{ match.Tournament }}</td>
+                <td>{{ match.Time }}</td>
+                <td>{{ match.Probability }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
