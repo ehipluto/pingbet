@@ -11,18 +11,23 @@ def convert_to_italian_time(utc_time):
     italian_tz = pytz.timezone('Europe/Rome')
     italian_time = utc.astimezone(italian_tz)
     return italian_time.strftime("%H:%M")
+
+
 def getMatchToday():
     call = 0
     callOdds = 0
     current_date = datetime.now().strftime("%Y-%m-%d")
     print(f"Effettuo controllo match in data {current_date}")
     url = f"https://table-tennis.sportdevs.com/matches-by-date?date=eq.{current_date}"
-    tournamentsName = ["TT Star Series", "TT Elite Series", "Challenger Series TT", "WTT", "TT Cup", "China Smash", "Contender", "Liga Pro China"]
+    
+    tournamentsKeywords = ["WTT", "TT", "China Smash", "Contender", "Liga Pro China" ]
+
     payload = {}
     headers = {
         'Accept': 'application/json',
         'Authorization': f'Bearer dsBH5k-JaEybFCGkeMY2gg'
     }
+
     print("Faccio fetch")
     response = requests.request("GET", url, headers=headers, data=payload)
     dicts = json.loads(response.text)
@@ -33,7 +38,16 @@ def getMatchToday():
     match_list = []
 
     for elem in dicts[0]['matches']:
-        if elem['status'] != "finished" and elem['status'] != 'live' and elem['tournament_name'] in tournamentsName:
+        # Verifica se il torneo contiene almeno una delle parole chiave
+        tournament_matches = False
+        tournament_name = elem['tournament_name'].upper()
+
+        for keyword in tournamentsKeywords:
+            if keyword.upper() in tournament_name:
+                tournament_matches = True
+                break
+
+        if elem['status'] != "finished" and elem['status'] != 'live' and tournament_matches:
             val = odds(elem['id'])
             callOdds += 1
             if val:
@@ -50,10 +64,12 @@ def getMatchToday():
                 # Aggiungi i dati alla lista
                 match_list.append(match_data)
 
-    print(f"Chiamate effettuate: {call + callOdds}\nChiamate odds: {callOdds}\nChiamate h2h: {call - 1}")  
+    print(f"Chiamate effettuate: {call + callOdds}\nChiamate odds: {callOdds}\nChiamate h2h: {call - 1}")
 
     # Restituisci la lista dei match
     return match_list
+
+
 
 
 
