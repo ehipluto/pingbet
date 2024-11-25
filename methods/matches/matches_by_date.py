@@ -19,8 +19,9 @@ def getMatchToday():
     current_date = datetime.now().strftime("%Y-%m-%d")
     print(f"Effettuo controllo match in data {current_date}")
     url = f"https://table-tennis.sportdevs.com/matches-by-date?date=eq.{current_date}"
-    
-    tournamentsKeywords = ["WTT", "TT", "Feeder", "Challenger", "World Tour", "China Smash", "Contender", "Liga Pro China" ]
+
+    tournamentsKeywords = ["WTT", "TT", "Feeder", "Challenger", "World Tour", "China Smash", "Contender",
+                           "Liga Pro China"]
 
     payload = {}
     headers = {
@@ -51,15 +52,22 @@ def getMatchToday():
             val = odds(elem['id'])
             callOdds += 1
             if val:
-                homePer, awayPer = h2h.getH2H(elem['home_team_id'], elem['away_team_id'])
+                # Ottieni le quote del primo bookmaker
+                first_bookmaker_odds = val.split('|')[1].split(':')[1].strip()
+
+                # Calcola H2H per utilizzarlo in un secondo momento
+                homePer, awayPer, h2h_count = h2h.getH2H(elem['home_team_id'], elem['away_team_id'])
                 call += 1
+
                 match_data = {
                     "ID": elem['id'],
                     "Match": elem['name'],
                     "Tournament": elem['tournament_name'],
                     "Time": convert_to_italian_time(elem['start_time']),
-                    "Probability": f"{round(homePer, 2)} - {round(awayPer, 2)}",
-                    "Odds": val
+                    "Odds": val,  # Mantieni tutte le quote per il modal
+                    "FirstBookmakerOdds": first_bookmaker_odds,  # Quote del primo bookmaker
+                    "H2HProbability": f"{round(homePer, 2)} - {round(awayPer, 2)}",  # Salva per il modal
+                    "H2HCount": h2h_count  # Numero di match H2H
                 }
                 # Aggiungi i dati alla lista
                 match_list.append(match_data)
@@ -68,9 +76,3 @@ def getMatchToday():
 
     # Restituisci la lista dei match
     return match_list
-
-
-
-
-
-
