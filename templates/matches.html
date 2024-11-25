@@ -93,16 +93,16 @@
             font-weight: 500;
         }
 
-        .probability {
-            background: #e8f5e9;
+        .first-bookmaker-odds {
+            background: #fff3e0;
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
             font-weight: 500;
         }
 
-        .odds {
-            background: #fff3e0;
+        .modal-odds {
+            background: #e0f7fa;
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
@@ -194,27 +194,18 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
-        /* Sistema di colori per le quote */
         .odds-value {
             font-weight: bold;
             padding: 4px 8px;
             border-radius: 4px;
         }
 
-        /* Colori per range di quote */
-        .odds-low {
-            background-color: #e3f2fd;
-            color: #1565c0;
-        }
-
-        .odds-medium {
-            background-color: #f1f8e9;
-            color: #2e7d32;
-        }
-
-        .odds-high {
-            background-color: #fbe9e7;
-            color: #d84315;
+        .modal-h2h-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         /* Stili per il titolo della partita */
@@ -277,18 +268,21 @@
                         <th>ID</th>
                         <th>Match</th>
                         <th>Time</th>
-                        <th>Probability</th>
-                        <th>Odds</th>
+                        <th>First Bookmaker Odds</th>
+                        <th>Full Odds</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for match in tournament_matches %}
-                    <tr class="clickable-row" data-odds="{{ match.Odds }}">
+                    <tr class="clickable-row"
+                        data-odds="{{ match.Odds }}"
+                        data-h2h-probability="{{ match.H2HProbability }}"
+                        data-h2h-count="{{ match.H2HCount }}">
                         <td class="match-id">{{ match.ID }}</td>
                         <td class="match-name">{{ match.Match }}</td>
                         <td class="match-time">{{ match.Time }}</td>
-                        <td><div class="probability">{{ match.Probability }}</div></td>
-                        <td><div class="odds">Visualizza quote</div></td>
+                        <td><div class="first-bookmaker-odds">{{ match.FirstBookmakerOdds }}</div></td>
+                        <td><div class="modal-odds">Visualizza quote</div></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -300,6 +294,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2 id="modalMatchName"></h2>
+            <div id="h2hInfoContainer" class="modal-h2h-info"></div>
             <div id="oddsContainer" class="odds-container"></div>
         </div>
     </div>
@@ -312,15 +307,28 @@
         row.addEventListener('click', function() {
             const odds = this.getAttribute('data-odds');
             const matchName = this.querySelector('.match-name').textContent;
-            displayOdds(odds, matchName);
+            const h2hProbability = this.getAttribute('data-h2h-probability');
+            const h2hCount = this.getAttribute('data-h2h-count');
+            displayMatchDetails(odds, matchName, h2hProbability, h2hCount);
         });
     });
 
-    function displayOdds(oddsString, matchName) {
-        const container = document.getElementById("oddsContainer");
+    function displayMatchDetails(oddsString, matchName, h2hProbability, h2hCount) {
+        const oddsContainer = document.getElementById("oddsContainer");
+        const h2hContainer = document.getElementById("h2hInfoContainer");
         document.getElementById("modalMatchName").textContent = matchName;
-        container.innerHTML = '';
 
+        // Display H2H information
+        h2hContainer.innerHTML = `
+            <strong>Head-to-Head Statistics:</strong><br>
+            Probability: ${h2hProbability} <br>
+            Matches Analyzed: ${h2hCount}
+        `;
+
+        // Clear previous odds
+        oddsContainer.innerHTML = '';
+
+        // Process and display all bookmaker odds
         const bookmakers = oddsString.split('|').filter(b => b.trim());
 
         bookmakers.forEach(bookmaker => {
@@ -348,7 +356,7 @@
                 </div>
             `;
 
-            container.appendChild(card);
+            oddsContainer.appendChild(card);
         });
 
         modal.style.display = "block";
