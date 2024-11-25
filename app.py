@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     listSet = tday.getMatchToday()
-
+    print("CIAO")
     return render_template('matches.html', matches=listSet)
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
