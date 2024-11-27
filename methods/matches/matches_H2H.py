@@ -13,6 +13,8 @@ def getH2H(home_team_id, away_team_id):
     response = requests.request("GET", url, headers=headers, data=payload)
     list = json.loads(response.text)
     for elem in list:
+        print(type(elem))
+        print(elem)
         if elem.get('home_team_score') is not None and elem.get('away_team_score') is not None:
             if 'current' in elem['home_team_score'] and 'current' in elem['away_team_score']:
                 if elem['home_team_id'] == home_team_id:
