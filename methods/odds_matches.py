@@ -24,6 +24,3 @@ def getOdds(match_id):
         value += f"|{elem['bookmaker_name']}: {elem['home']}{'↑' if elem['home_movement'] == 1 else '↓' if elem['home_movement'] == -1 else '•'} - {elem['away']}{'↑' if elem['away_movement'] == 1 else '↓' if elem['away_movement'] == -1 else '•'} \n"
 
     return value
-
-
-print(getOdds(match_id))
