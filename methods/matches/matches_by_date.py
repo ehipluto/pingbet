@@ -20,7 +20,7 @@ def getMatchToday():
     print(f"Effettuo controllo match in data {current_date}")
     url = f"https://table-tennis.sportdevs.com/matches-by-date?date=eq.{current_date}"
 
-    tournamentsKeywords = ["WTT", "TT", "Feeder", "Challenger", "World Tour", "China", "Contender", "ITTF", "Liga Pro", "Smash"]
+    tournamentsKeywords = ["WTT", "TT", "Feeder", "Challenger", "World Tour", "China", "Contender", "ITTF", "Smash"]
 
     payload = {}
     headers = {
