@@ -26,7 +26,7 @@ class DB:
                 self.data = mysql.connector.connect(
                     host=os.getenv("DB_HOST"),
                     user=os.getenv('DB_USER'),
-                    password=os.getenv('DB_PASSWORD'),  # Usa la password corretta per il tuo DB
+                    password=os.getenv('DB_PASSWORD'),
                     database=os.getenv('DB_NAME')
                 )
         except mysql.connector.Error as err:
