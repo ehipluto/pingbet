@@ -2,7 +2,6 @@ import os
 from mailcap import listmailcapfiles
 
 from flask import Flask, render_template
-from methods.matches import matches_by_date as tday
 from methods.matches import matchesday as test
 
 app = Flask(__name__)
