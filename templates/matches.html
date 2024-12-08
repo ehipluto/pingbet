@@ -13,33 +13,44 @@
         body {
             margin: 0;
             padding: 20px;
-            background-color: #f0f2f5;
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-            color: #1a237e;
+        }
+
+        .tournament-content {
+            display: none; /* Nasconde inizialmente il contenuto */
+            transition: all 0.3s ease;
         }
 
         .tournaments-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 20px;
             margin: 0 auto;
-            max-width: 1800px;
+            max-width: 1200px;
         }
 
         .tournament-card {
-            background: white;
+            background: #1e1e1e; /* Dark card background */
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tournament-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
         }
 
         .tournament-header {
-            background: linear-gradient(135deg, #1a237e, #3949ab);
+            background: linear-gradient(135deg, #ff5722, #ff9800); /* Gradient header */
             color: white;
             padding: 15px 20px;
             font-size: 1.2em;
@@ -47,10 +58,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 40px; /* Spazio per l'icona */
+        }
+
+        .tournament-header:after {
+            content: '▼';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .tournament-header.active:after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .tournament-content.show {
+            display: block;
         }
 
         .match-count {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.1);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.9em;
@@ -62,50 +94,150 @@
         }
 
         th {
-            background-color: #f8f9fa;
-            color: #1a237e;
+            background-color: #1f1f1f; /* Darker header for table */
+            color: #ffcc00; /* Bright yellow for table header */
             padding: 12px 15px;
             text-align: left;
             font-weight: 600;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 2px solid #444;
         }
 
         td {
             padding: 12px 15px;
-            border-bottom: 1px solid #eeeeee;
+            border-bottom: 1px solid #333; /* Darker border for table rows */
         }
 
         tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .match-id {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .match-name {
-            font-weight: 500;
-        }
-
-        .match-time {
-            color: #2196f3;
-            font-weight: 500;
+            background-color: #333; /* Darker hover effect */
         }
 
         .first-bookmaker-odds {
-            background: #fff3e0;
+            background: linear-gradient(135deg, #ffcc00, #ff9800); /* Gradient for first bookmaker odds */
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
             font-weight: 500;
+            color: #000000;
         }
 
         .modal-odds {
-            background: #e0f7fa;
+            background: linear-gradient(135deg, #ff5722, #ff9800); /* Gradient for modal odds */
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
+        }
+
+        .matches-summary {
+            text-align: center;
+            background: #1e1e1e; /* Dark background for summary */
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .total-matches {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .total-matches span {
+            background: #ff5722; /* Orange for span */
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-left: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Darker modal background */
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e; /* Dark modal content */
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .bookmaker-card {
+            background: #1f1f1f; /* Dark background for bookmaker card */
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #444; /* Dark border */
+            transition: transform 0.2s;
+        }
+
+        .bookmaker-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .odds-value {
+            background: #293133; /* Orange background for odds */
+            padding: 8px;
+            border-radius: 4px;
+            color: white; /* White text for better contrast */
+            flex: 1; /* Allow equal space for home and away odds */
+            text-align: center; /* Center align text */
+        }
+
+        .odds-values {
+            display: flex;
+            justify-content: space-between; /* Space between home and away odds */
+            margin-top: 10px;
+        }
+
+        .modal-h2h-info {
+            background: #ff7514;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #modalMatchName {
+            color: #ff5722; /* Orange for modal match name */
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .movement-up {
+            color: #4caf50; /* Green for upward movement */
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .movement-down {
+            color: #f44336; /* Red for downward movement */
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .movement-neutral {
+            color: #9e9e9e; /* Neutral color */
+            margin-left: 4px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #1f1f1f; /* Darker even rows */
         }
 
         @media (max-width: 768px) {
@@ -117,122 +249,6 @@
                 padding: 8px;
             }
         }
-
-        .matches-summary {
-            text-align: center;
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .total-matches {
-            font-size: 1.2em;
-            color: #1a237e;
-            font-weight: 600;
-        }
-
-        .total-matches span {
-            background: #e8f5e9;
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-left: 10px;
-        }
-
-        .tournaments-summary {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 8px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.4);
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .odds-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-            padding-bottom: 20px;
-        }
-
-        .bookmaker-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
-            transition: transform 0.2s;
-        }
-
-        .bookmaker-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .odds-value {
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        .modal-h2h-info {
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* Stili per il titolo della partita */
-        #modalMatchName {
-            color: #1a237e;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* Miglioramento visibilità movimento quote */
-        .movement-up {
-            color: #4caf50;
-            font-weight: bold;
-            margin-left: 4px;
-        }
-
-        .movement-down {
-            color: #f44336;
-            font-weight: bold;
-            margin-left: 4px;
-        }
-
-        .movement-neutral {
-            color: #9e9e9e;
-            margin-left: 4px;
-        }
     </style>
 </head>
 <body>
@@ -242,9 +258,6 @@
     <div class="matches-summary">
         <div class="total-matches">
             Total Matches Available: <span>{{ matches|length }}</span>
-        </div>
-        <div class="tournaments-summary">
-            Across {{ tournaments|length }} tournaments
         </div>
     </div>
     <div class="tournaments-container">
@@ -257,11 +270,12 @@
         {% endfor %}
 
         {% for tournament, tournament_matches in tournaments.items() %}
-        <div class="tournament-card">
-            <div class="tournament-header">
-                <span>{{ tournament }}</span>
-                <span class="match-count">{{ tournament_matches|length }} matches</span>
-            </div>
+    <div class="tournament-card">
+        <div class="tournament-header">
+            <span>{{ tournament }}</span>
+            <span class="match-count">{{ tournament_matches|length }} matches</span>
+        </div>
+        <div class="tournament-content">
             <table>
                 <thead>
                     <tr>
@@ -273,7 +287,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for match in tournament_matches %}
+                    {% for match in tournament_matches|sort(attribute='Time') %}
                     <tr class="clickable-row"
                         data-odds="{{ match.Odds }}"
                         data-h2h-probability="{{ match.H2HProbability }}"
@@ -282,7 +296,7 @@
                         <td class="match-name">{{ match.Match }}</td>
                         <td class="match-time">{{ match.Time }}</td>
                         <td><div class="first-bookmaker-odds">{{ match.FirstBookmakerOdds }}</div></td>
-                        <td><div class="modal-odds">Visualizza quote</div></td>
+                        <td><div class="modal-odds">View Odds</div></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -350,12 +364,11 @@
                     </div>
                     <div class="odds-value">
                         ${awayOdds.replace('↑', '<span class="movement-up">↑</span>')
-                                 .replace('↓', '<span class="movement-down">↓</span>')
-                                 .replace('•', '<span class="movement-neutral">•</span>')}
+                                  .replace('↓', '<span class="movement-down">↓</span>')
+                                  .replace('•', '<span class="movement-neutral">•</span>') }
                     </div>
                 </div>
             `;
-
             oddsContainer.appendChild(card);
         });
 
@@ -371,6 +384,36 @@
             modal.style.display = "none";
         }
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        const tournamentHeaders = document.querySelectorAll('.tournament-header');
+
+        tournamentHeaders.forEach(header => {
+            // Mostra il primo torneo all'apertura della pagina
+            if (header === tournamentHeaders[0]) {
+                header.classList.add('active');
+                header.nextElementSibling.classList.add('show');
+            }
+
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const isOpen = content.classList.contains('show');
+
+                // Chiudi tutti i tornei
+                document.querySelectorAll('.tournament-content').forEach(c => {
+                    c.classList.remove('show');
+                });
+                document.querySelectorAll('.tournament-header').forEach(h => {
+                    h.classList.remove('active');
+                });
+
+                // Apri/chiudi il torneo cliccato
+                if (!isOpen) {
+                    content.classList.add('show');
+                    this.classList.add('active');
+                }
+            });
+        });
+    });
     </script>
 </body>
 </html>
