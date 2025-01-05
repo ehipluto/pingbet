@@ -23,9 +23,11 @@ def update_database():
         'Accept': 'application/json',
         'Authorization': f'Bearer dsBH5k-JaEybFCGkeMY2gg'
     }
+    print("Faccio fetch")
     response = requests.request("GET", url, headers=headers, data=payload)
+    print(response.text)
     list_of_dict = json.loads(response.text)
-
+    print(f"Controllo {len(list_of_dict[0])} elementi...")
     for elem in list_of_dict[0]['matches']:
         tournament_matches = False
         tournament_name = elem['tournament_name'].upper()
@@ -49,8 +51,9 @@ def update_database():
                 with open('file.txt', 'a') as file:
                     file.write(str(elem))
                     file.write("\n")
+                print("Inserisco match nel db")
                 db.insertMatch(elem, os.getenv('DB_MATCHES'))
-    print("Inserimento completato!")
+    print("\nInserimento completato!")
 
 def getMatches():
     db = DB()
