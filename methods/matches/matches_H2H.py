@@ -1,3 +1,5 @@
+import os
+
 import requests, json
 
 def getH2H(home_team_id, away_team_id):
@@ -5,7 +7,7 @@ def getH2H(home_team_id, away_team_id):
     payload={}
     headers = {
         'Accept': 'application/json',
-        'Authorization': f'Bearer dsBH5k-JaEybFCGkeMY2gg' 
+        'Authorization': f'Bearer {os.getenv('SPORTDEVS_KEY')}'
     }
     home = 0
     away = 0
