@@ -8,7 +8,7 @@ idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==3.0.2
-mysql-connector-python
+mysql-connector-python-rf==2.2.2
 packaging==24.2
 pip==24.3.1
 python-dotenv==1.0.1
