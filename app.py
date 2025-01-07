@@ -14,7 +14,7 @@ thread_running = False
 def calculate_sleep_duration():
     """Calcola il tempo da dormire fino al prossimo intervallo di 3 ore."""
     now = datetime.now()
-    next_hour = (now.hour // 3 + 1) * 3
+    next_hour = (now.hour // 3 + 1) * 1
     if next_hour == 24:
         next_hour = 0
         next_day = now + timedelta(days=1)
