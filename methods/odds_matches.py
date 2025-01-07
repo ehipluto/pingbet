@@ -25,6 +25,6 @@ def getOdds(match_id):
   
   return value
 
-#print(getOdds(match_id))
+print(getOdds(match_id))
 #for odds in elem['odds']:
 #value += f"|{odds['bookmaker_name']} : {odds['score']}\n"
