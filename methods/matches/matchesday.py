@@ -23,24 +23,29 @@ def update_database():
         'Accept': 'application/json',
         'Authorization': f'Bearer dsBH5k-JaEybFCGkeMY2gg'
     }
+    print("Faccio fetch...")
     response = requests.request("GET", url, headers=headers, data=payload)
     list_of_dict = json.loads(response.text)
-
+    with open('file.txt', 'a') as file:
+        file.write(str(list_of_dict[0]))
+        file.write("\n\n")
+    print(f"Dati ottenuti\nControllo {len(list_of_dict[0])} elementi...")
     for elem in list_of_dict[0]['matches']:
+        print(f"\nControllo match {elem['id']}\n{elem['tournament_name']}")
         tournament_matches = False
         tournament_name = elem['tournament_name'].upper()
-
+        with open('file.txt', 'a') as file:
+            file.write(str(elem))
         for keyword in os.getenv('tournamentsKeywords'):
             if keyword.upper() in tournament_name:
                 tournament_matches = True
-                break
+
 
         if elem['status'] != "finished" and elem['status'] != 'live' and tournament_matches:
+            print("Controllo Odds")
             val = odds(elem['id'])
             if val:
-                with open('file.txt', 'a') as file:
-                    file.write(str(elem))
-                    file.write("\n")
+                print("Odds trovate!\nControllo H2H")
                 homePer, awayPer = h2h.getH2H(elem['home_team_id'], elem['away_team_id'])
                 elem['probability_home'] = round(homePer,2)
                 elem['probability_away'] = round(awayPer,2)
@@ -49,14 +54,21 @@ def update_database():
                 with open('file.txt', 'a') as file:
                     file.write(str(elem))
                     file.write("\n")
+                print("Inserisco match nel db")
                 db.insertMatch(elem, os.getenv('DB_MATCHES'))
-    print("Inserimento completato!")
+            else:
+                print("Odds non trovate...")
+
+    print("\nInserimento completato!")
 
 def getMatches():
+    print("Sono in getMatches")
     db = DB()
     db.doLogin()
     match_list = []
+    print("Richiedo match")
     listMatches =db.getData(os.getenv('DB_MATCHES'))
+    print("Match ottenuti")
     for elem in listMatches:
         match_data = {
             "ID": elem['id'],
@@ -67,6 +79,8 @@ def getMatches():
             "Odds": elem['odds']
         }
         match_list.append(match_data)
+
+    print("Ritorno i match sistemati")
     return match_list
 
 def convert_to_italian_time(utc_time):
@@ -77,6 +91,3 @@ def convert_to_italian_time(utc_time):
     italian_tz = pytz.timezone('Europe/Rome')
     italian_time = utc.astimezone(italian_tz)
     return italian_time
-
-
-#update_database()

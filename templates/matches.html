@@ -247,6 +247,14 @@
 <body>
     <div class="header">
         <h1>Today's Ping Pong Matches</h1>
+        <h3>Gestione Thread Demone</h3>
+        <p>Stato del thread: {{ "Attivo" if thread_running else "Inattivo" }}</p>
+        <form action="{{ url_for('start_thread') }}" method="post" style="display: inline;">
+            <button type="submit" {% if thread_running %}disabled{% endif %}>Avvia Thread</button>
+        </form>
+        <form action="{{ url_for('stop_thread') }}" method="post" style="display: inline;">
+            <button type="submit" {% if not thread_running %}disabled{% endif %}>Ferma Thread</button>
+        </form>
     </div>
     <div class="matches-summary">
         <div class="total-matches">

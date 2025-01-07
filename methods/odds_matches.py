@@ -1,3 +1,5 @@
+import os
+
 import requests, json
 
 match_id = 995380
@@ -11,7 +13,7 @@ def getOdds(match_id):
   payload={}
   headers = {
     'Accept': 'application/json',
-    'Authorization': 'Bearer dsBH5k-JaEybFCGkeMY2gg'
+    'Authorization': f'Bearer {os.getenv('SPORTDEVS_KEY')}'
     }
   value = ""
   response = requests.request("GET", url, headers=headers, data=payload)
