@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ping Pong Matches Today</title>
+    <title>Ping Pong Matches</title>
     <style>
         * {
             box-sizing: border-box;
@@ -23,11 +23,11 @@
         }
 
         .tournaments-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 20px;
             margin: 0 auto;
-            max-width: 1800px;
+            max-width: 1200px;
         }
 
         .tournament-card {
@@ -45,7 +45,7 @@
         }
 
         .tournament-header {
-            background: linear-gradient(135deg, #8e44ad, #9b59b6); /* Gradient header in purple */
+            background: linear-gradient(135deg, #6a0dad, #8a2be2); /* Purple gradient */
             color: white;
             padding: 15px 20px;
             font-size: 1.2em;
@@ -53,13 +53,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
         }
 
-        .match-count {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
+        .tournament-content {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .tournament-content.show {
+            display: block;
         }
 
         table {
@@ -68,8 +71,8 @@
         }
 
         th {
-            background-color: #1f1f1f; /* Darker header for table */
-            color: #9b59b6; /* Bright purple for table header */
+            background-color: #1f1f1f;
+            color: #8a2be2;
             padding: 12px 15px;
             text-align: left;
             font-weight: 600;
@@ -78,81 +81,31 @@
 
         td {
             padding: 12px 15px;
-            border-bottom: 1px solid #333; /* Darker border for table rows */
+            border-bottom: 1px solid #333;
         }
 
         tr:hover {
-            background-color: #333; /* Darker hover effect */
+            background-color: #333;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Darker modal background */
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background-color: #1e1e1e; /* Dark modal content */
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .odds-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-            padding-bottom: 20px;
-        }
-
-        .bookmaker-card {
-            background: #1f1f1f; /* Dark background for bookmaker card */
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #444; /* Dark border */
-            transition: transform 0.2s;
-        }
-
-        .bookmaker-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-        }
-
-        .odds-value {
-            background: #293133; /* Purple background for odds */
-            padding: 8px;
+        .first-bookmaker-odds {
+            background: linear-gradient(135deg, #8a2be2, #6a0dad);
+            padding: 6px 12px;
             border-radius: 4px;
-            color: white; /* White text for better contrast */
-            flex: 1; /* Allow equal space for home and away odds */
-            text-align: center; /* Center align text */
-        }
-
-        .modal-h2h-info {
-            background: #9b59b6;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
             text-align: center;
+            font-weight: 500;
+            color: #ffffff;
         }
 
-        #modalMatchName {
-            color: #8e44ad; /* Purple for modal match name */
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        .view-details {
+            background-color: #6a0dad;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
         }
 
         @media (max-width: 768px) {
@@ -168,13 +121,9 @@
 </head>
 <body>
     <div class="header">
-        <h1>Today's Ping Pong Matches</h1>
+        <h1>Ping Pong Matches</h1>
     </div>
-    <div class="matches-summary">
-        <div class="total-matches">
-            Total Matches Available: <span>{{ matches|length }}</span>
-        </div>
-    </div>
+
     <div class="tournaments-container">
         {% set tournaments = {} %}
         {% for match in matches %}
@@ -190,94 +139,49 @@
                 <span>{{ tournament }}</span>
                 <span class="match-count">{{ tournament_matches|length }} matches</span>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Match</th>
-                        <th>Time</th>
-                        <th>First Bookmaker Odds</th>
-                        <th>Full Odds</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for match in tournament_matches %}
-                    <tr class="clickable-row" data-odds="{{ match.Odds }}">
-                        <td class="match-id">{{ match.ID }}</td>
-                        <td class="match-name">{{ match.Match }}</td>
-                        <td class="match-time">{{ match.Time }}</td>
-                        <td><div class="odds-value">{{ match.FirstBookmakerOdds }}</div></td>
-                        <td><div class="odds-value">View Odds</div></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="tournament-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Match</th>
+                            <th>Time</th>
+                            <th>First Bookmaker Odds</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for match in tournament_matches %}
+                        <tr>
+                            <td>{{ match.ID }}</td>
+                            <td>{{ match.Match }}</td>
+                            <td>{{ match.Time }}</td>
+                            <td class="first-bookmaker-odds">{{ match.FirstBookmakerOdds }}</td>
+                            <td><a href="/details/{{ match.ID }}" class="view-details">View Details</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% endfor %}
     </div>
-    <div id="oddsModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalMatchName"></h2>
-            <div id="h2hInfoContainer" class="modal-h2h-info"></div>
-            <div id="oddsContainer" class="odds-container"></div>
-        </div>
-    </div>
-    <script>
-    const modal = document.getElementById("oddsModal");
-    const span = document.getElementsByClassName("close")[0];
-    const rows = document.getElementsByClassName("clickable-row");
 
-    Array.from(rows).forEach(row => {
-        row.addEventListener('click', function() {
-            const odds = this.getAttribute('data-odds');
-            const matchName = this.querySelector('.match-name').textContent;
-            displayMatchDetails(odds, matchName);
+    <script>
+    document.querySelectorAll('.tournament-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const isActive = content.classList.contains('show');
+
+            document.querySelectorAll('.tournament-content').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.tournament-header').forEach(el => el.classList.remove('active'));
+
+            if (!isActive) {
+                content.classList.add('show');
+                header.classList.add('active');
+            }
         });
     });
-
-    function displayMatchDetails(oddsString, matchName) {
-        const oddsContainer = document.getElementById("oddsContainer");
-        const h2hContainer = document.getElementById("h2hInfoContainer");
-        document.getElementById("modalMatchName").textContent = matchName;
-
-        h2hContainer.innerHTML = `Odds for match: ${matchName}`;
-
-        oddsContainer.innerHTML = '';
-
-        const bookmakers = oddsString.split('|').filter(b => b.trim());
-
-        bookmakers.forEach(bookmaker => {
-            const [name, odds] = bookmaker.split(':');
-            if (!name || !odds) return;
-
-            const card = document.createElement('div');
-            card.className = 'bookmaker-card';
-
-            const [homeOdds, awayOdds] = odds.split('-').map(o => o.trim());
-
-            card.innerHTML = `
-                <div class="bookmaker-name">${name.trim()}</div>
-                <div class="odds-values">
-                    <div class="odds-value">${homeOdds}</div>
-                    <div class="odds-value">${awayOdds}</div>
-                </div>
-            `;
-            oddsContainer.appendChild(card);
-        });
-
-        modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
     </script>
 </body>
 </html>
