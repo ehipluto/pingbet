@@ -20,6 +20,7 @@ def getOdds(match_id):
   dict = json.loads(response.text)
   if len(dict) == 0:
     return False
+
   for elem in dict[0]['periods'][0]['odds']:
       value += f"|{elem['bookmaker_name']}: {elem['home']}{'↑' if elem['home_movement'] == 1 else '↓' if elem['home_movement'] == -1 else '•'} - {elem['away']}{'↑' if elem['away_movement'] == 1 else '↓' if elem['away_movement'] == -1 else '•'} \n"
   

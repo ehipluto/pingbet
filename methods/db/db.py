@@ -1,3 +1,5 @@
+from os import remove
+
 import mysql.connector
 import sys
 import os
@@ -46,6 +48,15 @@ class DB:
             listMatches = cursor.fetchall()
             cursor.close()
             return listMatches
+    def removeMatches(self):
+        sqlQuery = f"DELETE FROM {os.getenv('DB_MATCHES')} WHERE start_time < NOW()"
+
+        with self._lock:
+            cursor = self.data.cursor(dictionary=True)
+            cursor.execute(sqlQuery)
+            self.data.commit()
+            print("Eliminazione completata!")
+            cursor.close()
 
     def insertMatch(self, elem, table):
         temp = {

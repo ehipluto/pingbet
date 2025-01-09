@@ -1,13 +1,12 @@
 import os
 from flask import Flask, render_template, send_from_directory, redirect, url_for, request
-from methods.matches import matchesday as test
+from methods.matches import matchesday as mat
 import threading
 import time
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-# Variabili globali per il thread
 db_thread = None
 thread_running = False
 
@@ -24,10 +23,6 @@ def calculate_sleep_duration():
     sleep_duration = (next_time - now).total_seconds()
     return sleep_duration
 
-def tes():
-    while thread_running:
-        print("CIAO")
-
 def database_update_thread():
     """Thread demone per aggiornare il database ogni 3 ore."""
     global thread_running
@@ -38,7 +33,7 @@ def database_update_thread():
             break
         try:
             print("Thread: Eseguo l'aggiornamento del database...")
-            test.update_database()  # Metodo di aggiornamento
+            mat.update_database()  # Metodo di aggiornamento
             print("Thread: Aggiornamento completato.")
         except Exception as e:
             print(f"Thread: Errore durante l'aggiornamento del database: {e}")
@@ -48,7 +43,7 @@ def database_update_thread():
 
 @app.route('/')
 def hello_world():
-    listMatches = test.getMatches()
+    listMatches = mat.getMatches()
     return render_template('matches.html', matches=listMatches, thread_running=thread_running)
 
 @app.route('/favicon.ico')
@@ -72,6 +67,17 @@ def stop_thread():
     global thread_running
     thread_running = False
     return redirect(url_for('hello_world'))
+
+
+@app.route('/remove_matches', methods=['POST'])
+def remove_matches():
+    try:
+        mat.removeMatches()
+        print("Partite rimosse con successo.")
+    except Exception as e:
+        print(f"Errore durante la rimozione delle partite: {e}")
+    return redirect(url_for('hello_world'))
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)

@@ -10,6 +10,10 @@ from methods.odds_matches import getOdds as odds
 from . import matches_H2H as h2h
 
 
+def removeMatches():
+    db = DB()
+    db.doLogin()
+    db.removeMatches()
 
 def update_database():
     with open('file.txt', 'w') as file:

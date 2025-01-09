@@ -267,7 +267,11 @@
         <form action="{{ url_for('stop_thread') }}" method="post" style="display: inline;">
             <button type="submit" {% if not thread_running %}disabled{% endif %}>Ferma Thread</button>
         </form>
+        <form action="{{ url_for('remove_matches') }}" method="post" style="display: inline;">
+                <button type="submit">Rimuovi Matches</button>
+        </form>
     </div>
+
     <div class="matches-summary">
         <div class="total-matches">
             Total Matches Available: <span>{{ matches|length }}</span>
