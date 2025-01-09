@@ -9,24 +9,24 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             margin: 0;
             padding: 20px;
             background-color: #121212; /* Dark background */
             color: #e0e0e0; /* Light text color */
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
-        
+
         .tournament-content {
             display: none; /* Nasconde inizialmente il contenuto */
             transition: all 0.3s ease;
         }
-        
+
         .tournaments-container {
             display: flex;
             flex-direction: column;
@@ -34,7 +34,7 @@
             margin: 0 auto;
             max-width: 1200px;
         }
-        
+
         .tournament-card {
             background: #1e1e1e; /* Dark card background */
             border-radius: 12px;
@@ -43,12 +43,12 @@
             margin-bottom: 20px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        
+
         .tournament-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
         }
-        
+
         .tournament-header {
             background: linear-gradient(135deg, #8a2be2, #4b0082); /* Gradient header */
             color: white;
@@ -63,7 +63,7 @@
             position: relative;
             padding-right: 40px; /* Spazio per l'icona */
         }
-        
+
         .tournament-header:after {
             content: '▼';
             position: absolute;
@@ -72,27 +72,27 @@
             transform: translateY(-50%);
             transition: transform 0.3s ease;
         }
-        
+
         .tournament-header.active:after {
             transform: translateY(-50%) rotate(180deg);
         }
-        
+
         .tournament-content.show {
             display: block;
         }
-        
+
         .match-count {
             background: rgba(255, 255, 255, 0.1);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.9em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         th {
             background-color: #1f1f1f; /* Darker header for table */
             color: #8a2be2; /* Bright purple for table header */
@@ -101,16 +101,16 @@
             font-weight: 600;
             border-bottom: 2px solid #444;
         }
-        
+
         td {
             padding: 12px 15px;
             border-bottom: 1px solid #333; /* Darker border for table rows */
         }
-        
+
         tr:hover {
             background-color: #333; /* Darker hover effect */
         }
-        
+
         .h2h-probability {
             background: linear-gradient(135deg, #4caf50, #2e7d32); /* Green gradient for H2H probability */
             padding: 6px 12px;
@@ -119,14 +119,14 @@
             font-weight: 500;
             color: #ffffff; /* White text for better contrast */
         }
-        
+
         .modal-odds {
             background: linear-gradient(135deg, #8a2be2, #4b0082); /* Gradient for modal odds */
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
         }
-        
+
         .matches-summary {
             text-align: center;
             background: #1e1e1e; /* Dark background for summary */
@@ -138,19 +138,19 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         .total-matches {
             font-size: 1.2em;
             font-weight: 600;
         }
-        
+
         .total-matches span {
             background: #8a2be2; /* Purple for span */
             padding: 5px 15px;
             border-radius: 20px;
             margin-left: 10px;
         }
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -162,7 +162,7 @@
             background-color: rgba(0, 0, 0, 0.8); /* Darker modal background */
             overflow-y: auto;
         }
-        
+
         .modal-content {
             background-color: #1e1e1e; /* Dark modal content */
             margin: 5% auto;
@@ -175,7 +175,7 @@
             max-height: 85vh;
             overflow-y: auto;
         }
-        
+
         .bookmaker-card {
             background: #1f1f1f; /* Dark background for bookmaker card */
             padding: 15px;
@@ -183,12 +183,12 @@
             border: 1px solid #444; /* Dark border */
             transition: transform 0.2s;
         }
-        
+
         .bookmaker-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
         }
-        
+
         .odds-value {
             background: #293133; /* Purple background for odds */
             padding: 8px;
@@ -197,13 +197,13 @@
             flex: 1; /* Allow equal space for home and away odds */
             text-align: center; /* Center align text */
         }
-        
+
         .odds-values {
             display: flex;
             justify-content: space-between; /* Space between home and away odds */
             margin-top: 10px;
         }
-        
+
         .modal-h2h-info {
             background: #8a2be2;
             padding: 15px;
@@ -211,90 +211,42 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        
+
         #modalMatchName {
             color: #8a2be2; /* Purple for modal match name */
             border-bottom: 2px solid #444;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        
+
         .movement-up {
             color: #4caf50; /* Green for upward movement */
             font-weight: bold;
             margin-left: 4px;
         }
-        
+
         .movement-down {
             color: #f44336; /* Red for downward movement */
             font-weight: bold;
             margin-left: 4px;
         }
-        
+
         .movement-neutral {
             color: #9e9e9e; /* Neutral color */
             margin-left: 4px;
         }
-        
+
         tr:nth-child(even) {
             background-color: #1f1f1f; /* Darker even rows */
         }
-        
+
         @media (max-width: 768px) {
             .tournaments-container {
                 grid-template-columns: 1fr;
             }
-        
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-        
-            th, td {
+
+            td, th {
                 padding: 8px;
-                font-size: 0.9em;
-            }
-        
-            .h2h-probability, .modal-odds {
-                font-size: 0.8em;
-                padding: 4px 8px;
-            }
-        
-            .tournament-header {
-                font-size: 1em;
-                padding: 10px 15px;
-            }
-        
-            .match-count {
-                font-size: 0.8em;
-                padding: 3px 8px;
-            }
-        
-            .match-id, .match-time {
-                width: 20%;
-            }
-        
-            .match-name {
-                width: 40%;
-            }
-        
-            .h2h-probability, .modal-odds {
-                width: 20%;
-            }
-        
-            .modal-content {
-                margin: 10% auto;
-                padding: 10px;
-                width: 95%;
-            }
-        
-            .bookmaker-card {
-                padding: 10px;
-            }
-        
-            .odds-value {
-                padding: 6px;
             }
         }
     </style>
@@ -350,7 +302,7 @@
                             data-h2h-count="{{ match.H2HCount }}">
                             <td class="match-id">{{ match.ID }}</td>
                             <td class="match-name">{{ match.Match }}</td>
-                            <td class="match-time">{{ match.Time.split(' ')[1] }}</td>
+                            <td class="match-time">{{ match.Time }}</td>
                             <td><div class="h2h-probability">{{ match.Probability }}</div></td>
                             <td><div class="modal-odds">View Odds</div></td>
                         </tr>
