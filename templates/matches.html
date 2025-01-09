@@ -13,44 +13,33 @@
         body {
             margin: 0;
             padding: 20px;
-            background-color: #121212; /* Dark background */
-            color: #e0e0e0; /* Light text color */
+            background-color: #f0f2f5;
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-        }
-
-        .tournament-content {
-            display: none; /* Nasconde inizialmente il contenuto */
-            transition: all 0.3s ease;
+            color: #1a237e;
         }
 
         .tournaments-container {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
             gap: 20px;
             margin: 0 auto;
-            max-width: 1200px;
+            max-width: 1800px;
         }
 
         .tournament-card {
-            background: #1e1e1e; /* Dark card background */
+            background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             overflow: hidden;
             margin-bottom: 20px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .tournament-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
         }
 
         .tournament-header {
-            background: linear-gradient(135deg, #8a2be2, #4b0082); /* Gradient header */
+            background: linear-gradient(135deg, #1a237e, #3949ab);
             color: white;
             padding: 15px 20px;
             font-size: 1.2em;
@@ -58,31 +47,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            user-select: none;
-            position: relative;
-            padding-right: 40px; /* Spazio per l'icona */
-        }
-
-        .tournament-header:after {
-            content: '▼';
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: transform 0.3s ease;
-        }
-
-        .tournament-header.active:after {
-            transform: translateY(-50%) rotate(180deg);
-        }
-
-        .tournament-content.show {
-            display: block;
         }
 
         .match-count {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.2);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.9em;
@@ -94,150 +62,50 @@
         }
 
         th {
-            background-color: #1f1f1f; /* Darker header for table */
-            color: #8a2be2; /* Bright purple for table header */
+            background-color: #f8f9fa;
+            color: #1a237e;
             padding: 12px 15px;
             text-align: left;
             font-weight: 600;
-            border-bottom: 2px solid #444;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         td {
             padding: 12px 15px;
-            border-bottom: 1px solid #333; /* Darker border for table rows */
+            border-bottom: 1px solid #eeeeee;
         }
 
         tr:hover {
-            background-color: #333; /* Darker hover effect */
+            background-color: #f5f5f5;
         }
 
-        .first-bookmaker-odds {
-            background: linear-gradient(135deg, #8a2be2, #4b0082); /* Gradient for first bookmaker odds */
+        .match-id {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .match-name {
+            font-weight: 500;
+        }
+
+        .match-time {
+            color: #2196f3;
+            font-weight: 500;
+        }
+
+        .probability {
+            background: #e8f5e9;
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
             font-weight: 500;
-            color: #000000;
         }
 
-        .modal-odds {
-            background: linear-gradient(135deg, #8a2be2, #4b0082); /* Gradient for modal odds */
+        .odds {
+            background: #fff3e0;
             padding: 6px 12px;
             border-radius: 4px;
             text-align: center;
-        }
-
-        .matches-summary {
-            text-align: center;
-            background: #1e1e1e; /* Dark background for summary */
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .total-matches {
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-
-        .total-matches span {
-            background: #8a2be2; /* Purple for span */
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-left: 10px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Darker modal background */
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background-color: #1e1e1e; /* Dark modal content */
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .bookmaker-card {
-            background: #1f1f1f; /* Dark background for bookmaker card */
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #444; /* Dark border */
-            transition: transform 0.2s;
-        }
-
-        .bookmaker-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-        }
-
-        .odds-value {
-            background: #293133; /* Purple background for odds */
-            padding: 8px;
-            border-radius: 4px;
-            color: white; /* White text for better contrast */
-            flex: 1; /* Allow equal space for home and away odds */
-            text-align: center; /* Center align text */
-        }
-
-        .odds-values {
-            display: flex;
-            justify-content: space-between; /* Space between home and away odds */
-            margin-top: 10px;
-        }
-
-        .modal-h2h-info {
-            background: #8a2be2;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        #modalMatchName {
-            color: #8a2be2; /* Purple for modal match name */
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .movement-up {
-            color: #4caf50; /* Green for upward movement */
-            font-weight: bold;
-            margin-left: 4px;
-        }
-
-        .movement-down {
-            color: #f44336; /* Red for downward movement */
-            font-weight: bold;
-            margin-left: 4px;
-        }
-
-        .movement-neutral {
-            color: #9e9e9e; /* Neutral color */
-            margin-left: 4px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #1f1f1f; /* Darker even rows */
         }
 
         @media (max-width: 768px) {
@@ -248,6 +116,138 @@
             td, th {
                 padding: 8px;
             }
+        }
+
+        .matches-summary {
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .total-matches {
+            font-size: 1.2em;
+            color: #1a237e;
+            font-weight: 600;
+        }
+
+        .total-matches span {
+            background: #e8f5e9;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-left: 10px;
+        }
+
+        .tournaments-summary {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .odds-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+            padding-bottom: 20px;
+        }
+
+        .bookmaker-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s;
+        }
+
+        .bookmaker-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .odds-value {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .odds-low {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .odds-medium {
+            background-color: #f1f8e9;
+            color: #2e7d32;
+        }
+
+        .odds-high {
+            background-color: #fbe9e7;
+            color: #d84315;
+        }
+
+        #modalMatchName {
+            color: #1a237e;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .movement-up {
+            color: #4caf50;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .movement-down {
+            color: #f44336;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .movement-neutral {
+            color: #9e9e9e;
+            margin-left: 4px;
+        }
+
+        /* Stile per le percentuali H2H */
+        .h2h-probability {
+            background: #e3f2fd;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            color: #1565c0;
         }
     </style>
 </head>
@@ -267,6 +267,9 @@
         <div class="total-matches">
             Total Matches Available: <span>{{ matches|length }}</span>
         </div>
+        <div class="tournaments-summary">
+            Across {{ tournaments|length }} tournaments
+        </div>
     </div>
     <div class="tournaments-container">
         {% set tournaments = {} %}
@@ -283,33 +286,28 @@
                 <span>{{ tournament }}</span>
                 <span class="match-count">{{ tournament_matches|length }} matches</span>
             </div>
-            <div class="tournament-content">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Match</th>
-                            <th>Time</th>
-                            <th>First Bookmaker Odds</th>
-                            <th>Full Odds</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for match in tournament_matches|sort(attribute='Time') %}
-                        <tr class="clickable-row"
-                            data-odds="{{ match.Odds }}"
-                            data-h2h-probability="{{ match.H2HProbability }}"
-                            data-h2h-count="{{ match.H2HCount }}">
-                            <td class="match-id">{{ match.ID }}</td>
-                            <td class="match-name">{{ match.Match }}</td>
-                            <td class="match-time">{{ match.Time }}</td>
-                            <td><div class="first-bookmaker-odds">{{ match.FirstBookmakerOdds }}</div></td>
-                            <td><div class="modal-odds">View Odds</div></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Match</th>
+                        <th>Time</th>
+                        <th>H2H Probability</th>
+                        <th>Odds</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in tournament_matches %}
+                    <tr class="clickable-row" data-odds="{{ match.Odds }}" data-h2h-probability="{{ match.H2HProbability }}">
+                        <td class="match-id">{{ match.ID }}</td>
+                        <td class="match-name">{{ match.Match }}</td>
+                        <td class="match-time">{{ match.Time }}</td>
+                        <td><div class="h2h-probability">{{ match.H2HProbability }}%</div></td>
+                        <td><div class="odds">Visualizza quote</div></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
         {% endfor %}
     </div>
@@ -317,113 +315,70 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2 id="modalMatchName"></h2>
-            <div id="h2hInfoContainer" class="modal-h2h-info"></div>
             <div id="oddsContainer" class="odds-container"></div>
         </div>
     </div>
     <script>
-        const modal = document.getElementById("oddsModal");
-        const span = document.getElementsByClassName("close")[0];
-        const rows = document.getElementsByClassName("clickable-row");
+    const modal = document.getElementById("oddsModal");
+    const span = document.getElementsByClassName("close")[0];
+    const rows = document.getElementsByClassName("clickable-row");
 
-        Array.from(rows).forEach(row => {
-            row.addEventListener('click', function() {
-                const odds = this.getAttribute('data-odds');
-                const matchName = this.querySelector('.match-name').textContent;
-                const h2hProbability = this.getAttribute('data-h2h-probability');
-                const h2hCount = this.getAttribute('data-h2h-count');
-                displayMatchDetails(odds, matchName, h2hProbability, h2hCount);
-            });
+    Array.from(rows).forEach(row => {
+        row.addEventListener('click', function() {
+            const odds = this.getAttribute('data-odds');
+            const matchName = this.querySelector('.match-name').textContent;
+            const h2hProbability = this.getAttribute('data-h2h-probability');
+            displayOdds(odds, matchName, h2hProbability);
         });
+    });
 
-        function displayMatchDetails(oddsString, matchName, h2hProbability, h2hCount) {
-            const oddsContainer = document.getElementById("oddsContainer");
-            const h2hContainer = document.getElementById("h2hInfoContainer");
-            document.getElementById("modalMatchName").textContent = matchName;
+    function displayOdds(oddsString, matchName, h2hProbability) {
+        const container = document.getElementById("oddsContainer");
+        document.getElementById("modalMatchName").textContent = matchName;
+        container.innerHTML = '';
 
-            // Display H2H information
-            h2hContainer.innerHTML = `
-                <strong>Head-to-Head Statistics:</strong><br>
-                Probability: ${h2hProbability} <br>
-                Matches Analyzed: ${h2hCount}
+        const bookmakers = oddsString.split('|').filter(b => b.trim());
+
+        bookmakers.forEach(bookmaker => {
+            const [name, odds] = bookmaker.split(':');
+            if (!name || !odds) return;
+
+            const card = document.createElement('div');
+            card.className = 'bookmaker-card';
+
+            const [homeOdds, awayOdds] = odds.split('-').map(o => o.trim());
+
+            card.innerHTML = `
+                <div class="bookmaker-name">${name.trim()}</div>
+                <div class="odds-values">
+                    <div class="odds-value">
+                        ${homeOdds.replace('↑', '<span class="movement-up">↑</span>')
+                                 .replace('↓', '<span class="movement-down">↓</span>')
+                                 .replace('•', '<span class="movement-neutral">•</span>')}
+                    </div>
+                    <div class="odds-value">
+                        ${awayOdds.replace('↑', '<span class="movement-up">↑</span>')
+                                 .replace('↓', '<span class="movement-down">↓</span>')
+                                 .replace('•', '<span class="movement-neutral">•</span>')}
+                    </div>
+                </div>
             `;
 
-            // Clear previous odds
-            oddsContainer.innerHTML = '';
+            container.appendChild(card);
+        });
 
-            // Process and display all bookmaker odds
-            const bookmakers = oddsString.split('|').filter(b => b.trim());
+        modal.style.display = "block";
+    }
 
-            bookmakers.forEach(bookmaker => {
-                const [name, odds] = bookmaker.split(':');
-                if (!name || !odds) return;
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 
-                const card = document.createElement('div');
-                card.className = 'bookmaker-card';
-
-                const [homeOdds, awayOdds] = odds.split('-').map(o => o.trim());
-
-                card.innerHTML = `
-                    <div class="bookmaker-name">${name.trim()}</div>
-                    <div class="odds-values">
-                        <div class="odds-value">
-                            ${homeOdds.replace('↑', '<span class="movement-up">↑</span>')
-                                     .replace('↓', '<span class="movement-down">↓</span>')
-                                     .replace('•', '<span class="movement-neutral">•</span>')}
-                        </div>
-                        <div class="odds-value">
-                            ${awayOdds.replace('↑', '<span class="movement-up">↑</span>')
-                                      .replace('↓', '<span class="movement-down">↓</span>')
-                                      .replace('•', '<span class="movement-neutral">•</span>') }
-                        </div>
-                    </div>
-                `;
-                oddsContainer.appendChild(card);
-            });
-
-            modal.style.display = "block";
-        }
-
-        span.onclick = function() {
+    window.onclick = function(event) {
+        if (event.target == modal) {
             modal.style.display = "none";
         }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const tournamentHeaders = document.querySelectorAll('.tournament-header');
-
-            tournamentHeaders.forEach(header => {
-                // Mostra il primo torneo all'apertura della pagina
-                if (header === tournamentHeaders[0]) {
-                    header.classList.add('active');
-                    header.nextElementSibling.classList.add('show');
-                }
-
-                header.addEventListener('click', function() {
-                    const content = this.nextElementSibling;
-                    const isOpen = content.classList.contains('show');
-
-                    // Chiudi tutti i tornei
-                    document.querySelectorAll('.tournament-content').forEach(c => {
-                        c.classList.remove('show');
-                    });
-                    document.querySelectorAll('.tournament-header').forEach(h => {
-                        h.classList.remove('active');
-                    });
-
-                    // Apri/chiudi il torneo cliccato
-                    if (!isOpen) {
-                        content.classList.add('show');
-                        this.classList.add('active');
-                    }
-                });
-            });
-        });
+    }
     </script>
 </body>
 </html>
