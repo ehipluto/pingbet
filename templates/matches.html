@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ping Pong Matches</title>
+    <title>Ping Pong Matches Today</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,28 +22,9 @@
             margin-bottom: 30px;
         }
 
-        .matches-summary {
-            text-align: center;
-            background: #1e1e1e; /* Dark summary background */
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .total-matches {
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-
-        .total-matches span {
-            background: #7e57c2; /* Purple accent */
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-left: 10px;
+        .tournament-content {
+            display: none; /* Nasconde inizialmente il contenuto */
+            transition: all 0.3s ease;
         }
 
         .tournaments-container {
@@ -63,8 +44,13 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
+        .tournament-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+        }
+
         .tournament-header {
-            background: linear-gradient(135deg, #673ab7, #9c27b0); /* Purple gradient */
+            background: linear-gradient(135deg, #ff5722, #ff9800); /* Gradient header */
             color: white;
             padding: 15px 20px;
             font-size: 1.2em;
@@ -72,6 +58,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 40px; /* Spazio per l'icona */
+        }
+
+        .tournament-header:after {
+            content: '▼';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .tournament-header.active:after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .tournament-content.show {
+            display: block;
         }
 
         .match-count {
@@ -88,7 +95,7 @@
 
         th {
             background-color: #1f1f1f; /* Darker header for table */
-            color: #7e57c2; /* Purple for table header */
+            color: #ffcc00; /* Bright yellow for table header */
             padding: 12px 15px;
             text-align: left;
             font-weight: 600;
@@ -104,18 +111,44 @@
             background-color: #333; /* Darker hover effect */
         }
 
-        .action-button {
-            background: #7e57c2; /* Purple button */
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
+        .first-bookmaker-odds {
+            background: linear-gradient(135deg, #ffcc00, #ff9800); /* Gradient for first bookmaker odds */
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .modal-odds {
+            background: linear-gradient(135deg, #ff5722, #ff9800); /* Gradient for modal odds */
+            padding: 6px 12px;
+            border-radius: 4px;
             text-align: center;
         }
 
-        .action-button:hover {
-            background: #5e35b1; /* Darker purple on hover */
+        .matches-summary {
+            text-align: center;
+            background: #1e1e1e; /* Dark background for summary */
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .total-matches {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .total-matches span {
+            background: #ff5722; /* Orange for span */
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-left: 10px;
         }
 
         .modal {
@@ -126,7 +159,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Dark modal background */
+            background-color: rgba(0, 0, 0, 0.8); /* Darker modal background */
             overflow-y: auto;
         }
 
@@ -143,16 +176,93 @@
             overflow-y: auto;
         }
 
-        .modal-close {
-            color: white;
-            font-size: 1.5em;
-            float: right;
-            cursor: pointer;
+        .bookmaker-card {
+            background: #1f1f1f; /* Dark background for bookmaker card */
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #444; /* Dark border */
+            transition: transform 0.2s;
+        }
+
+        .bookmaker-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .odds-value {
+            background: #293133; /* Orange background for odds */
+            padding: 8px;
+            border-radius: 4px;
+            color: white; /* White text for better contrast */
+            flex: 1; /* Allow equal space for home and away odds */
+            text-align: center; /* Center align text */
+        }
+
+        .odds-values {
+            display: flex;
+            justify-content: space-between; /* Space between home and away odds */
+            margin-top: 10px;
+        }
+
+        .modal-h2h-info {
+            background: #ff7514;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #modalMatchName {
+            color: #ff5722; /* Orange for modal match name */
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .movement-up {
+            color: #4caf50; /* Green for upward movement */
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .movement-down {
+            color: #f44336; /* Red for downward movement */
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        .movement-neutral {
+            color: #9e9e9e; /* Neutral color */
+            margin-left: 4px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #1f1f1f; /* Darker even rows */
+        }
+
+        @media (max-width: 768px) {
+            .tournaments-container {
+                grid-template-columns: 1fr;
+            }
+
+            td, th {
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
+        <h1>Today's Ping Pong Matches</h1>
+        <h3>Gestione Thread Demone</h3>
+        <p>Stato del thread: {{ "Attivo" if thread_running else "Inattivo" }}</p>
+        <form action="{{ url_for('start_thread') }}" method="post" style="display: inline;">
+            <button type="submit" {% if thread_running %}disabled{% endif %}>Avvia Thread</button>
+        </form>
+        <form action="{{ url_for('stop_thread') }}" method="post" style="display: inline;">
+            <button type="submit" {% if not thread_running %}disabled{% endif %}>Ferma Thread</button>
+        </form>
+    </div>
         <h1>Today's Ping Pong Matches</h1>
     </div>
     <div class="matches-summary">
@@ -170,31 +280,33 @@
         {% endfor %}
 
         {% for tournament, tournament_matches in tournaments.items() %}
-        <div class="tournament-card">
-            <div class="tournament-header">
-                <span>{{ tournament }}</span>
-                <span class="match-count">{{ tournament_matches|length }} matches</span>
-            </div>
+    <div class="tournament-card">
+        <div class="tournament-header">
+            <span>{{ tournament }}</span>
+            <span class="match-count">{{ tournament_matches|length }} matches</span>
+        </div>
+        <div class="tournament-content">
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Match</th>
-                        <th>Start Time</th>
-                        <th>H2H %</th>
-                        <th>Actions</th>
+                        <th>Time</th>
+                        <th>First Bookmaker Odds</th>
+                        <th>Full Odds</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for match in tournament_matches %}
-                    <tr>
-                        <td>{{ match.ID }}</td>
-                        <td>{{ match.Match }}</td>
-                        <td>{{ match.Time }}</td>
-                        <td>{{ match.H2HProbability }}</td>
-                        <td>
-                            <button class="action-button" onclick="openModal('{{ match.ID }}', '{{ match.Match }}', '{{ match.Odds }}', '{{ match.H2HCount }}')">View Details</button>
-                        </td>
+                    {% for match in tournament_matches|sort(attribute='Time') %}
+                    <tr class="clickable-row"
+                        data-odds="{{ match.Odds }}"
+                        data-h2h-probability="{{ match.H2HProbability }}"
+                        data-h2h-count="{{ match.H2HCount }}">
+                        <td class="match-id">{{ match.ID }}</td>
+                        <td class="match-name">{{ match.Match }}</td>
+                        <td class="match-time">{{ match.Time }}</td>
+                        <td><div class="first-bookmaker-odds">{{ match.FirstBookmakerOdds }}</div></td>
+                        <td><div class="modal-odds">View Odds</div></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -202,35 +314,116 @@
         </div>
         {% endfor %}
     </div>
-
-    <div id="matchModal" class="modal">
+    <div id="oddsModal" class="modal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <span class="close">&times;</span>
             <h2 id="modalMatchName"></h2>
-            <div id="modalDetails"></div>
+            <div id="h2hInfoContainer" class="modal-h2h-info"></div>
+            <div id="oddsContainer" class="odds-container"></div>
         </div>
     </div>
-
     <script>
-        function openModal(id, matchName, odds, h2hCount) {
-            document.getElementById('modalMatchName').textContent = `Match: ${matchName}`;
-            document.getElementById('modalDetails').innerHTML = `
-                <p><strong>Match ID:</strong> ${id}</p>
-                <p><strong>Odds:</strong> ${odds}</p>
-                <p><strong>H2H Count:</strong> ${h2hCount}</p>
+    const modal = document.getElementById("oddsModal");
+    const span = document.getElementsByClassName("close")[0];
+    const rows = document.getElementsByClassName("clickable-row");
+
+    Array.from(rows).forEach(row => {
+        row.addEventListener('click', function() {
+            const odds = this.getAttribute('data-odds');
+            const matchName = this.querySelector('.match-name').textContent;
+            const h2hProbability = this.getAttribute('data-h2h-probability');
+            const h2hCount = this.getAttribute('data-h2h-count');
+            displayMatchDetails(odds, matchName, h2hProbability, h2hCount);
+        });
+    });
+
+    function displayMatchDetails(oddsString, matchName, h2hProbability, h2hCount) {
+        const oddsContainer = document.getElementById("oddsContainer");
+        const h2hContainer = document.getElementById("h2hInfoContainer");
+        document.getElementById("modalMatchName").textContent = matchName;
+
+        // Display H2H information
+        h2hContainer.innerHTML = `
+            <strong>Head-to-Head Statistics:</strong><br>
+            Probability: ${h2hProbability} <br>
+            Matches Analyzed: ${h2hCount}
+        `;
+
+        // Clear previous odds
+        oddsContainer.innerHTML = '';
+
+        // Process and display all bookmaker odds
+        const bookmakers = oddsString.split('|').filter(b => b.trim());
+
+        bookmakers.forEach(bookmaker => {
+            const [name, odds] = bookmaker.split(':');
+            if (!name || !odds) return;
+
+            const card = document.createElement('div');
+            card.className = 'bookmaker-card';
+
+            const [homeOdds, awayOdds] = odds.split('-').map(o => o.trim());
+
+            card.innerHTML = `
+                <div class="bookmaker-name">${name.trim()}</div>
+                <div class="odds-values">
+                    <div class="odds-value">
+                        ${homeOdds.replace('↑', '<span class="movement-up">↑</span>')
+                                 .replace('↓', '<span class="movement-down">↓</span>')
+                                 .replace('•', '<span class="movement-neutral">•</span>')}
+                    </div>
+                    <div class="odds-value">
+                        ${awayOdds.replace('↑', '<span class="movement-up">↑</span>')
+                                  .replace('↓', '<span class="movement-down">↓</span>')
+                                  .replace('•', '<span class="movement-neutral">•</span>') }
+                    </div>
+                </div>
             `;
-            document.getElementById('matchModal').style.display = 'block';
-        }
+            oddsContainer.appendChild(card);
+        });
 
-        function closeModal() {
-            document.getElementById('matchModal').style.display = 'none';
-        }
+        modal.style.display = "block";
+    }
 
-        window.onclick = function(event) {
-            if (event.target === document.getElementById('matchModal')) {
-                closeModal();
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const tournamentHeaders = document.querySelectorAll('.tournament-header');
+
+        tournamentHeaders.forEach(header => {
+            // Mostra il primo torneo all'apertura della pagina
+            if (header === tournamentHeaders[0]) {
+                header.classList.add('active');
+                header.nextElementSibling.classList.add('show');
             }
-        };
+
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const isOpen = content.classList.contains('show');
+
+                // Chiudi tutti i tornei
+                document.querySelectorAll('.tournament-content').forEach(c => {
+                    c.classList.remove('show');
+                });
+                document.querySelectorAll('.tournament-header').forEach(h => {
+                    h.classList.remove('active');
+                });
+
+                // Apri/chiudi il torneo cliccato
+                if (!isOpen) {
+                    content.classList.add('show');
+                    this.classList.add('active');
+                }
+            });
+        });
+    });
     </script>
 </body>
 </html>
