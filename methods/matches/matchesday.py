@@ -45,7 +45,7 @@ def update_database():
                 tournament_matches = True
 
 
-        if elem['status'] != "finished" and elem['status'] != 'live':
+        if elem['status'] != "finished" and elem['status'] != 'live' and tournament_matches:
             print("Controllo Odds")
             val = odds(elem['id'])
             if val:
