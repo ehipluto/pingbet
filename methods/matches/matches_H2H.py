@@ -39,9 +39,8 @@ def getH2H(home_team_id, away_team_id):
     else: 
         homePer = (home/(home+away)) * 100
         awayPer = (away/(home+away)) * 100
-        
-    TotalMatches = home + away
-    return homePer, awayPer, TotalMatches
+    
+    return homePer, awayPer
 
 
 
