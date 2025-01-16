@@ -54,7 +54,6 @@ def update_database():
                 elem['probability_home'] = round(homePer,2)
                 elem['probability_away'] = round(awayPer,2)
                 elem['start_time'] = convert_to_italian_time(elem['start_time'])
-                elem['h2h_count'] = TotalMatches
                 elem['odds'] = val
                 with open('file.txt', 'a') as file:
                     file.write(str(elem))
@@ -79,10 +78,9 @@ def getMatches():
             "ID": elem['id'],
             "Match": elem['name'],
             "Tournament": elem['tournament_name'],
-            "Time": convert_to_italian_time(elem['start_time']),
+            "Time": elem['start_time'],
             "Probability": f"{elem['probability_home']} - {elem['probability_away']}",
-            "H2HCount": h2h_count,
-            "Odds": elem['odds'],
+            "Odds": elem['odds']
         }
         match_list.append(match_data)
 
