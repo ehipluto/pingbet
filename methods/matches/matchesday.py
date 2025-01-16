@@ -54,6 +54,7 @@ def update_database():
                 elem['probability_home'] = round(homePer,2)
                 elem['probability_away'] = round(awayPer,2)
                 elem['start_time'] = convert_to_italian_time(elem['start_time'])
+                elem['h2h_count'] = TotalMatches
                 elem['odds'] = val
                 with open('file.txt', 'a') as file:
                     file.write(str(elem))
