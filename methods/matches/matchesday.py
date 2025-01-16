@@ -78,8 +78,9 @@ def getMatches():
             "ID": elem['id'],
             "Match": elem['name'],
             "Tournament": elem['tournament_name'],
-            "Time": elem['start_time'],
+            "Time": convert_to_italian_time(elem['start_time']),
             "Probability": f"{elem['probability_home']} - {elem['probability_away']}",
+            "H2HCount": h2h_count
             "Odds": elem['odds']
         }
         match_list.append(match_data)
